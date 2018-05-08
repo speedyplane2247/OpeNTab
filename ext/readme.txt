@@ -1,1 +1,1 @@
-This contains the unpacked extension of OpeNTab.
+This contains the unpacked extension of OpeNTab@master.
