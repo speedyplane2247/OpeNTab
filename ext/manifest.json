@@ -1,7 +1,7 @@
 {
     "name": "OpeNTab",
     "description": "An Open-Source chrome://newtab alternative",
-    "version": "1.0.0.01",
+    "version": "1.0.0.02",
     "manifest_version": 2,
     "permissions" : ["management"],
     "chrome_url_overrides" : {
