@@ -15,6 +15,23 @@ function resetColor() {
     console.log("Resetting Color...")
     customizeColorStick(0, 143, 179)
 }
+function makeDefaultEngine() {
+    searchEngine = document.getElementById("searchengine")
+    if (searchEngine.options.selectedIndex == 0) {
+        // set google as default
+        setCookie("default","google")
+    }if (searchEngine.options.selectedIndex == 1) {
+        // set yahoo as default
+        setCookie("default","yahoo")
+    }if (searchEngine.options.selectedIndex == 2) {
+        // set bing as default
+        setCookie("default","bing")
+    }if (searchEngine.options.selectedIndex == 3) {
+        // set duckduckgo as default
+        setCookie("default","duckduckgo")
+    }
+
+}
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -48,12 +65,29 @@ setCookie("bColorB",b,341237498374);
 window.onload = function() {
     customizeColor(getCookie("bColorR"),getCookie("bColorG"),getCookie("bColorB"),"silent")
     if (location.protocol == "file:") {
-        alert("Using file: isn't supported! Altough you will be able to use it, most customization features such as custom colors, and notification settings aren't able to be stored in cookies. If you have Python installed on your computer, you can use\n'python -m SimpleHTTPServer 8007 ./openntab-master' or whatever the folder with the files are called. This will host your own mini server. You can then navigate to it using: 0.0.0.0:8007. If you have port forwarding enabled for 8007, use another port.")
+        alert("Using file: isn't supported! Although you will be able to use it, most customization features such as custom colors, and notification settings aren't able to be stored in cookies. If you have Python installed on your computer, you can use\n'python -m SimpleHTTPServer 8007 ./openntab-master' or whatever the folder with the files are called. This will host your own mini server. You can then navigate to it using: 0.0.0.0:8007. If you have port forwarding enabled for 8007, use another port.")
     }
     if (getCookie("didShowSearch") === undefined || getCookie("didShowSearch") === null || getCookie("didShowSearch") == false) {
         alert("Did you know that you can set OpeNTab as your default search engine? In Console, a guide for setting it up is shown.");
         setCookie("didShowSearch",true)
         console.log("Setting it up is simple: In your browser's settings, goto the spot to add a new search engine. Use the following code,\n\nhttp://urlofyourhosting.tld:port/index.html#/search/%s\n, where %s represents the query term (specified by your browser.)\n\n ")
+    }
+    if (getCookie("default") == "google") {
+        // set option to google
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 0
+    }if (getCookie("default") == "yahoo") {
+        // set option to yahoo
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 1
+    }if (getCookie("default") == "bing") {
+        // set option to bing
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 2
+    }if (getCookie("default") == "duckduckgo") {
+        // set option to duckduckgo
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 3
     }
 }
 function search() {
@@ -73,5 +107,4 @@ function search() {
         searchText = "https://duckduckgo.com/?q="+encodeURIComponent(searchBox.value) // DuckDuckGo Search Query
     }
     location.href = searchText
-
 }
