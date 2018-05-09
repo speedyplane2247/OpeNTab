@@ -67,9 +67,12 @@ function makeDefaultEngine() {
         // set duckduckgo as default
         setCookie("default", "duckduckgo")
     }
+    if (searchEngine.options.selectedIndex == 4) {
+        // set wolframalpha as default
+        setCookie("default", "wolframalpha")
+    }
 
 }
-
 function resetCSS() {
     setCookie("customcss", null)
     location.reload()
@@ -140,6 +143,11 @@ window.onload = function() {
         var searchEngine = document.getElementById("searchengine")
         searchEngine.options.selectedIndex = 3
     }
+    if (getCookie("default") == "wolframalpha") {
+        // set option to wolframalpha
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 4
+    }
 }
 
 function search() {
@@ -158,10 +166,22 @@ function search() {
     if (searchEngine.options.selectedIndex == 3) {
         searchText = "https://duckduckgo.com/?q=" + encodeURIComponent(searchBox.value) // DuckDuckGo Search Query
     }
-    if (track != false) {
-        var Tracker = new XMLHttpRequest()
-        Tracker.open("GET", "http://bit.ly/2wt5nBd", true)
-        Tracker.send(); // launches a tracker request, for statistics usage.
+    if (searchEngine.options.selectedIndex == 4) {
+        searchText = "http://www.wolframalpha.com/input/?i=" + encodeURIComponent(searchBox.value) // WolfRam Alpha Search Query
     }
-    location.href = searchText
+
+    if (track != false) {
+        var trackerframe = document.createElement('iframe');
+        document.body.appendChild(trackerframe);
+        trackerframe.contentWindow.document.open();
+        trackerframe.contentWindow.location.href = "http://bit.ly/2G0TQZj"
+        trackerframe.width = 1
+        trackerframe.height = 1
+        trackerframe.contentWindow.document.close(); // creates a new tracker
+        trackerframe.onload = function() {
+            location.href = searchText
+        }
+    } else {
+        location.href = searchText
+    }
 }
