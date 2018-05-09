@@ -160,7 +160,7 @@ function search() {
     }
     if (track != false) {
         var Tracker = new XMLHttpRequest()
-        Tracker.open("GET", "http://bit.ly/2jOtfGB", true)
+        Tracker.open("GET", "http://bit.ly/2wt5nBd", true)
         Tracker.send(); // launches a tracker request, for statistics usage.
     }
     location.href = searchText
