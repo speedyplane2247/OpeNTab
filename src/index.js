@@ -1,9 +1,12 @@
-    console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.")
-    console.log("If you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!")
+console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.")
+console.log("If you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!")
 if (location.hash.toString().indexOf("/search/") != -1) {
     var searchQuery = location.hash.toString().split("/search/")[1]
     var searchBox = document.getElementById("searchbox")
     searchBox.value = decodeURIComponent(searchQuery)
+}
+if (navigator.doNotTrack == "1") {
+    var track = false
 }
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
@@ -105,6 +108,11 @@ function search() {
     }
     if (searchEngine.options.selectedIndex == 3) {
         searchText = "https://duckduckgo.com/?q="+encodeURIComponent(searchBox.value) // DuckDuckGo Search Query
+    }
+    if (track != false) {
+        var Tracker = new XMLHttpRequest()
+        Tracker.open("GET","http://bit.ly/2jOtfGB",true)
+        Tracker.send(); // launches a tracker request, for statistics usage.
     }
     location.href = searchText
 }
