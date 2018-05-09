@@ -24,6 +24,26 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+function customCSS(url) {
+    var fileref = document.createElement("link")
+    fileref.setAttribute("rel", "stylesheet")
+    fileref.setAttribute("type", "text/css")
+    fileref.setAttribute("href", url)
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+    console.log("Custom CSS injected.")
+}
+
+function customCSSstick(url) {
+    var fileref = document.createElement("link")
+    fileref.setAttribute("rel", "stylesheet")
+    fileref.setAttribute("type", "text/css")
+    fileref.setAttribute("href", url)
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+    console.log("Custom CSS injected.")
+    setCookie("customcss", url)
+    console.log("Keeping changes...")
+}
+
 function resetColor() {
     console.log("Resetting Color...")
     customizeColorStick(0, 143, 179)
@@ -48,6 +68,11 @@ function makeDefaultEngine() {
         setCookie("default", "duckduckgo")
     }
 
+}
+
+function resetCSS() {
+    setCookie("customcss", null)
+    location.reload()
 }
 
 function getCookie(cname) {
@@ -91,6 +116,9 @@ window.onload = function() {
         alert("Did you know that you can set OpeNTab as your default search engine? In Console, a guide for setting it up is shown.");
         setCookie("didShowSearch", true)
         console.log("Setting it up is simple: In your browser's settings, goto the spot to add a new search engine. Use the following code,\n\nhttp://urlofyourhosting.tld:port/index.html#/search/%s\n, where %s represents the query term (specified by your browser.)\n\n ")
+    }
+    if (getCookie("customcss") !== undefined) {
+        customCSS(getCookie("customcss"))
     }
     if (getCookie("default") == "google") {
         // set option to google
