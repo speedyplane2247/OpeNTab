@@ -3,7 +3,7 @@
 if (location.hash.toString().indexOf("/search/") != -1) {
     var searchQuery = location.hash.toString().split("/search/")[1]
     var searchBox = document.getElementById("searchbox")
-    searchBox.value = searchQuery
+    searchBox.value = decodeURIComponent(searchQuery)
 }
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
