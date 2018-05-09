@@ -3,5 +3,12 @@ body {
     color: rgb(44, 44, 44);
 }
 p {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+span {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:72px;
+}
+h1 {
+    text-align: center;
 }
