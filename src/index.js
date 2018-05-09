@@ -1,5 +1,10 @@
     console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.")
     console.log("If you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!")
+if (location.hash.toString().indexOf("/search/") != -1) {
+    var searchQuery = location.hash.toString().split("/search/")[1]
+    var searchBox = document.getElementById("searchbox")
+    searchBox.value = searchQuery
+}
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -42,6 +47,14 @@ setCookie("bColorB",b,341237498374);
 }
 window.onload = function() {
     customizeColor(getCookie("bColorR"),getCookie("bColorG"),getCookie("bColorB"),"silent")
+    if (location.protocol == "file:") {
+        alert("Using file: isn't supported! Altough you will be able to use it, most customization features such as custom colors, and notification settings aren't able to be stored in cookies. If you have Python installed on your computer, you can use\n'python -m SimpleHTTPServer 8007 ./openntab-master' or whatever the folder with the files are called. This will host your own mini server. You can then navigate to it using: 0.0.0.0:8007. If you have port forwarding enabled for 8007, use another port.")
+    }
+    if (getCookie("didShowSearch") === undefined || getCookie("didShowSearch") === null || getCookie("didShowSearch") == false) {
+        alert("Did you know that you can set OpeNTab as your default search engine? In Console, a guide for setting it up is shown.");
+        setCookie("didShowSearch",true)
+        console.log("Setting it up is simple: In your browser's settings, goto the spot to add a new search engine. Use the following code,\n\nhttp://urlofyourhosting.tld:port/index.html#/search/%s\n, where %s represents the query term (specified by your browser.)\n\n ")
+    }
 }
 function search() {
     var searchBox = document.getElementById("searchbox")
