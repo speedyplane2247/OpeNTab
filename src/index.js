@@ -1,10 +1,10 @@
-console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.")
-console.log("If you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!")
-if (location.hash.toString().indexOf("/search/") != -1) {
-    var searchQuery = location.hash.toString().split("/search/")[1]
-    var searchBox = document.getElementById("searchbox")
-    searchBox.value = decodeURIComponent(searchQuery)
-}
+/*
+OpeNTab BackEnd
+Index.js
+(c) speedyplane2247 2017-2018
+Under MIT license
+*/console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.\n\nIf you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!\nYou can also inject custom CSS using customCSS(url) and customCSSstick(url).")
+// tracker frame
 if (navigator.doNotTrack == "1") {
     var track = false
 }
@@ -24,13 +24,15 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function customCSS(url) {
+function customCSS(url, type) {
     var fileref = document.createElement("link")
     fileref.setAttribute("rel", "stylesheet")
     fileref.setAttribute("type", "text/css")
     fileref.setAttribute("href", url)
     document.getElementsByTagName("head")[0].appendChild(fileref)
-    console.log("Custom CSS injected.")
+    if (type != "silent" || type === undefined) {
+        console.log("Custom CSS injected.")
+    }
 }
 
 function customCSSstick(url) {
@@ -48,7 +50,6 @@ function resetColor() {
     console.log("Resetting Color...")
     customizeColorStick(0, 143, 179)
 }
-
 function makeDefaultEngine() {
     searchEngine = document.getElementById("searchengine")
     if (searchEngine.options.selectedIndex == 0) {
@@ -67,11 +68,22 @@ function makeDefaultEngine() {
         // set duckduckgo as default
         setCookie("default", "duckduckgo")
     }
+    if (searchEngine.options.selectedIndex == 4) {
+        // set wolframalpha as default
+        setCookie("default", "wolframalpha")
+    }
+    if (searchEngine.options.selectedIndex == 5) {
+        // set ask.com as default
+        setCookie("default", "askcom")
+    }
+    if (searchEngine.options.selectedIndex == 6) {
+        // set aol.com as default
+        setCookie("default", "aolcom")
+    }
 
 }
-
 function resetCSS() {
-    setCookie("customcss", null)
+    setCookie("customcss", undefined)
     location.reload()
 }
 
@@ -107,7 +119,30 @@ function customizeColorStick(r, g, b) {
     setCookie("bColorG", g, 341237498374);
     setCookie("bColorB", b, 341237498374);
 }
+document.addEventListener("keypress", function(event) {
+    if (event.keyCode == 13) {
+        search();
+    }
+})
+window.onhashchange = function () {
+    if (location.hash.toString().indexOf("/search/") != -1) {
+        var searchQuery = location.hash.toString().split("/search/")[1]
+        var searchBox = document.getElementById("searchbox")
+        searchBox.value = decodeURIComponent(searchQuery)
+    } 
+}
 window.onload = function() {
+    if (track != false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-118988635-1');
+    }
+    if (location.hash.toString().indexOf("/search/") != -1) {
+        var searchQuery = location.hash.toString().split("/search/")[1]
+        var searchBox = document.getElementById("searchbox")
+        searchBox.value = decodeURIComponent(searchQuery)
+    }
     customizeColor(getCookie("bColorR"), getCookie("bColorG"), getCookie("bColorB"), "silent")
     if (location.protocol == "file:") {
         alert("Using file: isn't supported! Although you will be able to use it, most customization features such as custom colors, and notification settings aren't able to be stored in cookies. If you have Python installed on your computer, you can use\n'python -m SimpleHTTPServer 8007 ./openntab-master' or whatever the folder with the files are called. This will host your own mini server. You can then navigate to it using: 0.0.0.0:8007. If you have port forwarding enabled for 8007, use another port.")
@@ -118,7 +153,7 @@ window.onload = function() {
         console.log("Setting it up is simple: In your browser's settings, goto the spot to add a new search engine. Use the following code,\n\nhttp://urlofyourhosting.tld:port/index.html#/search/%s\n, where %s represents the query term (specified by your browser.)\n\n ")
     }
     if (getCookie("customcss") !== undefined) {
-        customCSS(getCookie("customcss"))
+        customCSS(getCookie("customcss"), "silent")
     }
     if (getCookie("default") == "google") {
         // set option to google
@@ -140,6 +175,22 @@ window.onload = function() {
         var searchEngine = document.getElementById("searchengine")
         searchEngine.options.selectedIndex = 3
     }
+    if (getCookie("default") == "wolframalpha") {
+        // set option to wolframalpha
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 4
+    }
+    if (getCookie("default") == "askcom") {
+        // set option to ask.com
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 5
+    }
+    if (getCookie("default") == "aolcom") {
+        // set option to aol.com
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 6
+    }
+
 }
 
 function search() {
@@ -147,21 +198,47 @@ function search() {
     var searchEngine = document.getElementById("searchengine")
     var searchText = "http://example.com/search.php?q=class"
     if (searchEngine.options.selectedIndex == 0) {
-        searchText = "https://www.google.com/search?q=" + encodeURIComponent(searchBox.value) // Google Search Query
+        searchText = "https://www.google.com/search?q=" + encodeURIComponent(searchBox.value)
+        // Google Search Query
     }
     if (searchEngine.options.selectedIndex == 1) {
-        searchText = "https://search.yahoo.com/search?p=" + encodeURIComponent(searchBox.value) // Yahoo Search Query
+        searchText = "https://search.yahoo.com/search?p=" + encodeURIComponent(searchBox.value)
+        // Yahoo Search Query
     }
     if (searchEngine.options.selectedIndex == 2) {
-        searchText = "http://www.bing.com/search?q=" + encodeURIComponent(searchBox.value) // Bing Search Query
+        searchText = "http://www.bing.com/search?q=" + encodeURIComponent(searchBox.value)
+        // Bing Search Query
     }
     if (searchEngine.options.selectedIndex == 3) {
-        searchText = "https://duckduckgo.com/?q=" + encodeURIComponent(searchBox.value) // DuckDuckGo Search Query
+        searchText = "https://duckduckgo.com/?q=" + encodeURIComponent(searchBox.value)
+        // DuckDuckGo Search Query
     }
+    if (searchEngine.options.selectedIndex == 4) {
+        searchText = "http://www.wolframalpha.com/input/?i=" + encodeURIComponent(searchBox.value)
+        // WolfRam Alpha Search Query
+    }
+    if (searchEngine.options.selectedIndex == 5) {
+        searchText = "https://www.ask.com/web?q=" + encodeURIComponent(searchBox.value)
+        // Ask.com Search Query
+    }
+    if (searchEngine.options.selectedIndex == 6) {
+        searchText = "https://search.aol.com/aol/search?q=" + encodeURIComponent(searchBox.value)
+        // Aol.com Search Query
+    }
+
     if (track != false) {
-        var Tracker = new XMLHttpRequest()
-        Tracker.open("GET", "http://bit.ly/2wt5nBd", true)
-        Tracker.send(); // launches a tracker request, for statistics usage.
+        var trackerframeX = document.createElement('iframe');
+        document.body.appendChild(trackerframeX);
+        trackerframeX.contentWindow.document.open();
+        trackerframeX.src = "http://bit.ly/" + descURL
+        trackerframeX.width = 1
+        trackerframeX.height = 1
+        trackerframeX.contentWindow.document.close();
+        // creates a new tracker
+        trackerframeX.onload = function() {
+            location.href = searchText
+        }
+    } else {
+        location.href = searchText
     }
-    location.href = searchText
 }
