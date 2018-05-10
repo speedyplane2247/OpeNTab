@@ -125,15 +125,20 @@ document.addEventListener("keypress", function(event) {
         search();
     }
 })
+window.onhashchange = function () {
+    if (location.hash.toString().indexOf("/search/") != -1) {
+        var searchQuery = location.hash.toString().split("/search/")[1]
+        var searchBox = document.getElementById("searchbox")
+        searchBox.value = decodeURIComponent(searchQuery)
+    } 
+}
 window.onload = function() {
-    var trackerframe = document.createElement('iframe');
-    document.body.appendChild(trackerframe);
-    trackerframe.contentWindow.document.open();
-    trackerframe.src = "http://bit.ly/" + descURL
-    trackerframe.width = 1
-    trackerframe.height = 1
-    trackerframe.contentWindow.document.close();
-    // creates a new tracker
+    if (track != false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-118988635-1');
+    }
     if (location.hash.toString().indexOf("/search/") != -1) {
         var searchQuery = location.hash.toString().split("/search/")[1]
         var searchBox = document.getElementById("searchbox")
