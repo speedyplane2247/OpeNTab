@@ -1,6 +1,7 @@
 body {
     background-color: rgb(1, 143, 179);
     color: rgb(44, 44, 44);
+    text-align: center;
 }
 p {
     text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

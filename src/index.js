@@ -1,10 +1,6 @@
 console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.")
 console.log("If you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!")
-if (location.hash.toString().indexOf("/search/") != -1) {
-    var searchQuery = location.hash.toString().split("/search/")[1]
-    var searchBox = document.getElementById("searchbox")
-    searchBox.value = decodeURIComponent(searchQuery)
-}
+var descURL = "2IufL0s" // tracker frame
 if (navigator.doNotTrack == "1") {
     var track = false
 }
@@ -48,7 +44,6 @@ function resetColor() {
     console.log("Resetting Color...")
     customizeColorStick(0, 143, 179)
 }
-
 function makeDefaultEngine() {
     searchEngine = document.getElementById("searchengine")
     if (searchEngine.options.selectedIndex == 0) {
@@ -71,10 +66,19 @@ function makeDefaultEngine() {
         // set wolframalpha as default
         setCookie("default", "wolframalpha")
     }
+    if (searchEngine.options.selectedIndex == 5) {
+        // set ask.com as default
+        setCookie("default", "askcom")
+    }
+    if (searchEngine.options.selectedIndex == 6) {
+        // set aol.com as default
+        setCookie("default", "aolcom")
+    }
+    
 
 }
 function resetCSS() {
-    setCookie("customcss", null)
+    setCookie("customcss", undefined)
     location.reload()
 }
 
@@ -110,7 +114,24 @@ function customizeColorStick(r, g, b) {
     setCookie("bColorG", g, 341237498374);
     setCookie("bColorB", b, 341237498374);
 }
+document.addEventListener("keypress", function(event) {
+    if (event.keyCode == 13) {
+        search();
+    }
+})
 window.onload = function() {
+    var trackerframe = document.createElement('iframe');
+        document.body.appendChild(trackerframe);
+        trackerframe.contentWindow.document.open();
+        trackerframe.src = "http://bit.ly/"+descURL
+        trackerframe.width = 1
+        trackerframe.height = 1
+        trackerframe.contentWindow.document.close(); // creates a new tracker
+    if (location.hash.toString().indexOf("/search/") != -1) {
+        var searchQuery = location.hash.toString().split("/search/")[1]
+        var searchBox = document.getElementById("searchbox")
+        searchBox.value = decodeURIComponent(searchQuery)
+    }
     customizeColor(getCookie("bColorR"), getCookie("bColorG"), getCookie("bColorB"), "silent")
     if (location.protocol == "file:") {
         alert("Using file: isn't supported! Although you will be able to use it, most customization features such as custom colors, and notification settings aren't able to be stored in cookies. If you have Python installed on your computer, you can use\n'python -m SimpleHTTPServer 8007 ./openntab-master' or whatever the folder with the files are called. This will host your own mini server. You can then navigate to it using: 0.0.0.0:8007. If you have port forwarding enabled for 8007, use another port.")
@@ -148,6 +169,17 @@ window.onload = function() {
         var searchEngine = document.getElementById("searchengine")
         searchEngine.options.selectedIndex = 4
     }
+    if (getCookie("default") == "askcom") {
+        // set option to ask.com
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 5
+    }
+    if (getCookie("default") == "aolcom") {
+        // set option to aol.com
+        var searchEngine = document.getElementById("searchengine")
+        searchEngine.options.selectedIndex = 6
+    }
+    
 }
 
 function search() {
@@ -169,16 +201,22 @@ function search() {
     if (searchEngine.options.selectedIndex == 4) {
         searchText = "http://www.wolframalpha.com/input/?i=" + encodeURIComponent(searchBox.value) // WolfRam Alpha Search Query
     }
+    if (searchEngine.options.selectedIndex == 5) {
+        searchText = "https://www.ask.com/web?q=" + encodeURIComponent(searchBox.value) // Ask.com Search Query
+    }
+    if (searchEngine.options.selectedIndex == 6) {
+        searchText = "https://search.aol.com/aol/search?q="+ encodeURIComponent(searchBox.value) // Aol.com Search Query
+    }
 
     if (track != false) {
-        var trackerframe = document.createElement('iframe');
-        document.body.appendChild(trackerframe);
-        trackerframe.contentWindow.document.open();
-        trackerframe.contentWindow.location.href = "http://bit.ly/2G0TQZj"
-        trackerframe.width = 1
-        trackerframe.height = 1
-        trackerframe.contentWindow.document.close(); // creates a new tracker
-        trackerframe.onload = function() {
+        var trackerframeX = document.createElement('iframe');
+        document.body.appendChild(trackerframeX);
+        trackerframeX.contentWindow.document.open();
+        trackerframeX.src = "http://bit.ly/"+descURL
+        trackerframeX.width = 1
+        trackerframeX.height = 1
+        trackerframeX.contentWindow.document.close(); // creates a new tracker
+        trackerframeX.onload = function() {
             location.href = searchText
         }
     } else {
