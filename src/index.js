@@ -4,7 +4,6 @@ Index.js
 (c) speedyplane2247 2017-2018
 Under MIT license
 */console.log("Welcome to OpeNTab JS Console! You can customize things using customizeColor(r,g,b) to customize colors or customizeColorStick(r,g,b) to make these changes stick.\n\nIf you don't like your new color scheme, you can type resetColor() and reset the colors back to stock!\nYou can also inject custom CSS using customCSS(url) and customCSSstick(url).")
-var descURL = "2IufL0s"
 // tracker frame
 if (navigator.doNotTrack == "1") {
     var track = false
